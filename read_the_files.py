@@ -1,16 +1,16 @@
 import csv
+import os
+import shutil
 import sys
-
 from openpyxl import load_workbook
 import zipfile
 import PyPDF2
 
 
-
 def read_the_files(file_end):
     archive = 'my_test_zip.zip'
     zip_file = zipfile.ZipFile(archive)
-
+    path = os.path.join(os.path.abspath(os.path.dirname(__file__)), 'tmp')
     for file in zip_file.infolist():
         if file.filename.endswith('.pdf') and file_end == '.pdf':
             print('PDF')
@@ -19,6 +19,8 @@ def read_the_files(file_end):
             getpage37 = plread.getPage(37)
             text37 = getpage37.extractText()
             assert '2.3.9Factories as fixtures' in text37
+            # path = os.path.join(os.path.abspath(os.path.dirname(__file__)), 'tmp')
+            shutil.rmtree(path)
             sys.exit()
         if file.filename.endswith('.csv') and file_end == '.csv':
             print('CSV')
@@ -32,6 +34,7 @@ def read_the_files(file_end):
 
                 else:
                     assert False
+            shutil.rmtree(path)
             sys.exit()
         if file.filename.endswith('.xlsx') and file_end == '.xlsx':
             print('XLSX')
@@ -48,6 +51,7 @@ def read_the_files(file_end):
 
             else:
                 assert False
+            shutil.rmtree(path)
             sys.exit()
 
 
